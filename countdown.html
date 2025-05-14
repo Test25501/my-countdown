@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Обратный отсчет</title>
+<style>
+  body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+  }
+
+  #countdown {
+    font-size: 2em;
+    text-align: center;
+    color: #333;
+  }
+
+  #countdown span {
+    font-weight: bold;
+    color: #007bff; /* Пример цвета для цифр */
+  }
+</style>
+</head>
+<body>
+
+<div id="countdown">
+  <span id="days"></span>d
+  <span id="hours"></span>h
+  <span id="minutes"></span>m
+  <span id="seconds"></span>s
+</div>
+
+<script>
+  const countdown = () => {
+    // Установите здесь вашу целевую дату и время (Год, Месяц (0-11), День, Час, Минуты, Секунды)
+    const endDate = new Date("2025-12-31T23:59:59").getTime();
+
+    const now = new Date().getTime();
+    const distance = endDate - now;
+
+    // Расчет времени
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Отображение результатов в элементах
+    document.getElementById("days").innerText = days;
+    document.getElementById("hours").innerText = hours;
+    document.getElementById("minutes").innerText = minutes;
+    document.getElementById("seconds").innerText = seconds;
+
+    // Если отсчет закончен, выводим текст
+    if (distance < 0) {
+      clearInterval(interval);
+      document.getElementById("countdown").innerHTML = "Время вышло!";
+    }
+  };
+
+  // Обновляем отсчет каждую секунду
+  const interval = setInterval(countdown, 1000);
+
+  // Запускаем отсчет сразу после загрузки страницы
+  countdown();
+</script>
+
+</body>
+</html>
