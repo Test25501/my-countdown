@@ -9,19 +9,23 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f0f0;
+    /* Устанавливаем фон прозрачным */
+    background-color: transparent;
     margin: 0;
+    /* Возможно, потребуется выравнивание текста по центру,
+       если вы убрали min-height 100vh и flex */
+    text-align: center;
   }
 
   #countdown {
     font-size: 2em;
     text-align: center;
-    color: #333;
+    color: #333; /* Цвет текста по умолчанию (d, h, m, s) */
   }
 
   #countdown span {
     font-weight: bold;
-    color: #007bff; /* Пример цвета для цифр */
+    color: #007bff; /* Цвет цифр */
   }
 </style>
 </head>
@@ -37,12 +41,20 @@
 <script>
   const countdown = () => {
     // Установите здесь вашу целевую дату и время (Год, Месяц (0-11), День, Час, Минуты, Секунды)
-    const endDate = new Date("2025-12-31T23:59:59").getTime();
+    // Например: new Date("2025-12-31T23:59:59").getTime();
+    // Убедитесь, что дата в будущем!
+    const endDate = new Date("2025-12-31T23:59:59").getTime(); // <-- Измените НА ВАШУ ДАТУ
 
     const now = new Date().getTime();
     const distance = endDate - now;
 
     // Расчет времени
+    if (distance < 0) {
+      clearInterval(interval);
+      document.getElementById("countdown").innerHTML = "Время вышло!";
+      return; // Прекращаем выполнение функции после вывода сообщения
+    }
+
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -53,12 +65,6 @@
     document.getElementById("hours").innerText = hours;
     document.getElementById("minutes").innerText = minutes;
     document.getElementById("seconds").innerText = seconds;
-
-    // Если отсчет закончен, выводим текст
-    if (distance < 0) {
-      clearInterval(interval);
-      document.getElementById("countdown").innerHTML = "Время вышло!";
-    }
   };
 
   // Обновляем отсчет каждую секунду
